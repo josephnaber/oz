@@ -1,0 +1,81 @@
+service: defender-as-code-test-project
+configValidationMode: error
+frameworkVersion: '3'
+
+provider:
+  name: defender
+  stage: ${opt:stage, 'dev'}
+  stackName: joe-ssot-defender
+  ssot: true
+
+custom:
+  config: ${file(secrets.${self:provider.stage}.yml)}
+
+defender:
+  key: ${self:custom.config.keys.api}
+  secret: ${self:custom.config.keys.secret}
+
+resources:
+  actions:
+    joe-test-action-dac:
+      name: joe-test-action-dac
+      relayer: ${self:resources.relayers.joes-oz-relayer-goerli}
+      trigger:
+        type: webhook
+      paused: false
+      path: ./actions
+
+  policies:
+    policy-PP:
+      eip1559-pricing: true
+      private-transactions: false
+    policy-Q4:
+      eip1559-pricing: true
+      private-transactions: false
+
+  contracts: {}
+
+  relayers:
+    joes-oz-relayer-goerli:
+      name: joes-oz-relayer-goerli-dac
+      network: goerli
+      min-balance: '100000000000000000'
+      policy: ${self:resources.policies.policy-PP}
+      api-keys:
+        - key-1
+    joes-oz-relayer-sepolia:
+      name: joes-oz-relayer-sepolia-dac
+      network: sepolia
+      min-balance: '100000000000000000'
+      policy: ${self:resources.policies.policy-Q4}
+      api-keys:
+        - key-1
+
+  notifications:
+    naber-consulting-slack:
+      type: slack
+      name: naber-consulting-slack
+      config:
+        url: >-
+          ${self:custom.config.webhooks.slack}
+      paused: false
+
+  categories:
+    medium-severity:
+      name: Medium Severity
+      description: A default category to be assigned for medium risk monitors.
+    low-severity:
+      name: Low Severity
+      description: A default category to be assigned for low risk monitors.
+    high-severity:
+      name: High Severity
+      description: A default category to be assigned for high risk monitors.
+
+  monitors: {}
+
+  forked-networks: {}
+
+  block-explorer-api-keys: {}
+
+plugins:
+  - '@openzeppelin/defender-as-code'
