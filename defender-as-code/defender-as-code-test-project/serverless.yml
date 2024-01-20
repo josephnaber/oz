@@ -53,7 +53,7 @@ resources:
       name: naber-consulting-slack
       config:
         url: >-
-          https://hooks.slack.com/services/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
+          ${self:custom.config.webhooks.slack}
       paused: false
   categories: {}
   monitors: {}
