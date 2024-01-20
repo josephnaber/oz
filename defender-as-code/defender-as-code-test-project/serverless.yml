@@ -1,20 +1,16 @@
 service: defender-as-code-test-project
 configValidationMode: error
 frameworkVersion: '3'
-
 provider:
   name: defender
   stage: ${opt:stage, 'dev'}
   stackName: joe-ssot-defender
   ssot: true
-
 custom:
   config: ${file(secrets.${self:provider.stage}.yml)}
-
 defender:
   key: ${self:custom.config.keys.api}
   secret: ${self:custom.config.keys.secret}
-
 resources:
   actions:
     joe-test-action-dac:
@@ -23,59 +19,53 @@ resources:
       trigger:
         type: webhook
       paused: false
-      path: ./actions
-
+      path: <PATH_TO_YOUR_ACTION_CODE_HERE>
   policies:
-    policy-PP:
+    policy-Mk:
       eip1559-pricing: true
       private-transactions: false
-    policy-Q4:
+    policy-xh:
       eip1559-pricing: true
       private-transactions: false
-
-  contracts: {}
-
-  relayers:
-    joes-oz-relayer-goerli:
-      name: joes-oz-relayer-goerli-dac
+  contracts:
+    access-control-factory:
+      name: Access Control Factory
+      address: '0xeBd906d6b14699574bDe9B3293894af8Fe38A198'
       network: goerli
-      min-balance: '100000000000000000'
-      policy: ${self:resources.policies.policy-PP}
-      api-keys:
-        - key-1
+  relayers:
     joes-oz-relayer-sepolia:
       name: joes-oz-relayer-sepolia-dac
       network: sepolia
       min-balance: '100000000000000000'
-      policy: ${self:resources.policies.policy-Q4}
+      policy: ${self:resources.policies.policy-Mk}
       api-keys:
         - key-1
-
+    joes-oz-relayer-goerli:
+      name: joes-oz-relayer-goerli-dac
+      network: goerli
+      min-balance: '100000000000000000'
+      policy: ${self:resources.policies.policy-xh}
+      api-keys:
+        - key-1
   notifications:
     naber-consulting-slack:
       type: slack
       name: naber-consulting-slack
       config:
         url: >-
-          ${self:custom.config.webhooks.slack}
+          https://hooks.slack.com/services/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
       paused: false
-
-  categories:
-    medium-severity:
-      name: Medium Severity
-      description: A default category to be assigned for medium risk monitors.
-    low-severity:
-      name: Low Severity
-      description: A default category to be assigned for low risk monitors.
-    high-severity:
-      name: High Severity
-      description: A default category to be assigned for high risk monitors.
-
+  categories: {}
   monitors: {}
-
   forked-networks: {}
-
-  block-explorer-api-keys: {}
-
+  block-explorer-api-keys:
+    sepolia:
+      network: sepolia
+      key-hash: 414673c422519be58c6266197c0ce0ba2c59db664a373a9cc6370b2b294f4633
+      key: ${self:custom.config.etherscan.token}
+    goerli:
+      network: goerli
+      key-hash: 414673c422519be58c6266197c0ce0ba2c59db664a373a9cc6370b2b294f4633
+      key: ${self:custom.config.etherscan.token}
 plugins:
   - '@openzeppelin/defender-as-code'
