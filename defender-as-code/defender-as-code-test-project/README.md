@@ -134,7 +134,7 @@ monitors:
     # optional - either contracts OR addresses should be defined
     contracts:
       - ${self:resources.contracts.contract-1}
-    ...
+    
 ...
 ```
 
