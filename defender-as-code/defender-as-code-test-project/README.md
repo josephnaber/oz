@@ -244,3 +244,7 @@ git add package.json
 git commit -m 'v{version here}'
 git push origin main
 ```
+
+curl -X POST "https://api.defender.openzeppelin.com/actions/e58c1321-3e8e-43d5-b20d-d5357c5b1b17/runs/webhook/ec522b2d-9694-44b8-a5ba-102d851784d3/LEdmCHCyNaYJoS3HXP92fG" \
+-H "Content-Type: application/json" \
+-d '{"key1":"value1", "key2":"value2"}'
