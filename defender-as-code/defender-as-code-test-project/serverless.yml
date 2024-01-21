@@ -25,6 +25,14 @@ resources:
       paused: false
       path: ./actions
 
+    joe-test-action-sms:
+      name: joe-test-action-sms
+      relayer: ${self:resources.relayers.joes-oz-relayer-goerli}
+      trigger:
+        type: sms
+      paused: false
+      path: ./actions
+
   policies:
     policy-PP:
       eip1559-pricing: true
@@ -33,7 +41,11 @@ resources:
       eip1559-pricing: true
       private-transactions: false
 
-  contracts: {}
+  contracts:
+    access-control-factory:
+      name: Access Control Factory
+      address: '0xeBd906d6b14699574bDe9B3293894af8Fe38A198'
+      network: goerli
 
   relayers:
     joes-oz-relayer-goerli:

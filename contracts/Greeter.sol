@@ -3,7 +3,7 @@ pragma solidity 0.8.23;
 
 /// @title A simple Greeter contract
 /// @dev This contract is for creating a simple smart contract for learning purposes
-contract Greeter {
+contract Greeter2 {
     string private greeting;
 
     // Event declaration
